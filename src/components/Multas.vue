@@ -14,33 +14,30 @@
   </div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      departamento: 'Recursos Humanos',
-      multas: [],
-      interval: null,
-    }
-  },
-  methods: {
-    cargarMultas() {
-      fetch(`http://localhost:8000/api/notificaciones/${this.departamento}`)
-        .then(res => res.json())
-        .then(data => {
-          this.multas = data;
-        })
-        .catch(console.error);
-    }
-  },
-  mounted() {
-    this.cargarMultas();
-    this.interval = setInterval(this.cargarMultas, 5000);
-  },
-  beforeUnmount() {
-    clearInterval(this.interval);
-  }
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+const departamento = 'Recursos Humanos'
+const multas = ref([])
+let interval = null
+
+const cargarMultas = () => {
+  fetch(`http://localhost:8000/api/notificaciones/${departamento}`)
+    .then(res => res.json())
+    .then(data => {
+      multas.value = data
+    })
+    .catch(console.error)
 }
+
+onMounted(() => {
+  cargarMultas()
+  interval = setInterval(cargarMultas, 5000)
+})
+
+onBeforeUnmount(() => {
+  clearInterval(interval)
+})
 </script>
 
 <style scoped>
