@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h2 class="titulo">Notificaciones de Multas - {{ departamento }}</h2>
+    <h2 class="titulo">Multas - {{ departamento }}</h2>
     <div v-if="multas.length === 0" class="sin-multas">No hay multas.</div>
     <ul class="lista">
       <li v-for="multa in multas" :key="multa.id" class="tarjeta">
