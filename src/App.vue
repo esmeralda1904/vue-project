@@ -18,6 +18,22 @@
           Perfil
         </button>
 
+        <button 
+          :class="{'active': view === 'multas'}" 
+          @click="view = 'multas'"
+          aria-label="Multas"
+        >
+          Multas
+        </button>
+
+        <button 
+          :class="{'active': view === 'generar'}" 
+          @click="view = 'generar'" 
+          aria-label="Generar Multa"
+        >
+          Generar Multa
+        </button>
+
         <div class="notificacion-wrapper" @click="irAMultas" role="button" tabindex="0" aria-label="Notificaciones de multas">
           <span :class="['campana', {'active': view === 'multas'}]">🔔</span>
           <span v-if="nuevaMulta" class="badge">1</span>
@@ -26,7 +42,7 @@
     </header>
 
     <main class="main-content">
-      <component :is="currentView" />
+      <component :is="currentView" @multas-actualizadas="actualizarNotificaciones" />
     </main>
   </div>
 </template>
@@ -34,8 +50,9 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import Menu from './components/Menu.vue'
-import Perfil from './components/Perfil.vue'
+import Perfil from './components/perfil.vue'
 import Multas from './components/Multas.vue'
+import GenerarMulta from './components/GenerarMulta.vue'
 
 const view = ref('menu')
 const currentCount = ref(0)
@@ -46,6 +63,7 @@ const currentView = computed(() => {
   switch (view.value) {
     case 'perfil': return Perfil
     case 'multas': return Multas
+    case 'generar': return GenerarMulta
     default: return Menu
   }
 })
@@ -148,7 +166,7 @@ body, html, #app {
   position: absolute;
   top: 0;
   right: -6px;
-  background-color: #dc2626; /* rojo */
+  background-color: #dc2626;
   color: white;
   font-size: 0.65rem;
   font-weight: 700;
